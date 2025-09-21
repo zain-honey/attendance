@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/user/Desktop/New%20folder%20(4)/Untitled-1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>🚀 Futuristic Daily Test Record</title>
+  <style>
+    body {
+      font-family: "Consolas", monospace;
+      margin: 20px;
+      background: darkslategray;
+      color: #e6edf3;
+    }
+    h1 {
+      text-align: center;
+      color: #00ffcc;
+      text-shadow: 0 0 8px #00ffcc;
+    }
+     img {
+         width: 200px;
+         height: auto;
+         border: 10px aqua;
+         margin: auto ;  
+         margin-right: 150px;
+         margin-left: 120px;
+
+
+    }
+    .controls {
+      margin: 20px 0;
+      text-align: 250px;
+    }
+    button {
+      padding: 20px 28px;
+      margin: 5px;
+      margin-left: 20px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #00ffcc, #0066ff);
+      color: #0d1117;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: "Consolas", monospace;
+    }
+    button:hover {
+      box-shadow: 0 0 12px #00ffcc;
+      transform: scale(1.05);
+    }
+    select {
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      font-family: "Consolas", monospace;
+      background: #161b22;
+      color: #00ffcc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #161b22;
+      box-shadow: 0px 4px 10px rgba(0, 255, 204, 0.2);
+    }
+    th, td {
+      border: 1px solid #30363d;
+      padding: 12px;
+      text-align: center;
+      font-size: 14px;
+    }
+    th {
+      background: #21262d;
+      color: #00ffcc;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    tr:hover {
+      background: #1f6feb33;
+    }
+    input {
+      border: none;
+      background: transparent;
+      text-align: center;
+      width: 90%;
+      color: #e6edf3;
+      font-family: "Consolas", monospace;
+    }
+    input[type="date"] {
+      background: #0d1117;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      border-radius: 5px;
+      padding: 2px 5px;
+    }
+    .month-header {
+      background: #21262d;
+      font-weight: bold;
+      text-align: left;
+      padding: 8px;
+      color: #00ffcc;
+    }
+    
+    
+  </style>
+</head>
+<body>
+
+  <h1>📘 Futuristic Daily Test Record</h1>
+     <div class="controls">
+     <img src="zain3.jpg" alt="photo">
+    <button onclick="addRow()">➕ Add Test</button>
+    <button onclick="saveData()">💾 Save</button>
+    <button onclick="printTable()">🖨️ Print</button>
+    <select id="monthFilter" onchange="filterByMonth()">
+      <option value="all">📅 Show All Months</option>
+      <option value="01">January</option>
+      <option value="02">February</option>
+      <option value="03">March</option>
+      <option value="04">April</option>
+      <option value="05">May</option>
+      <option value="06">June</option>
+      <option value="07">July</option>
+      <option value="08">August</option>
+      <option value="09">September</option>
+      <option value="10">October</option>
+      <option value="11">November</option>
+      <option value="12">December</option>
+    </select>
+  </div>
+
+  <table id="marksTable">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Subject</th>
+        <th>Total Marks</th>
+        <th>Obtained Marks</th>
+        <th>Percentage</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Rows dynamically added -->
+    <tr><td><input type="date" class="dateField"></td><td><input placeholder="Enter Subject"></td><td><input type="number" placeholder="Total"></td><td><input type="number" placeholder="Obtained"></td><td>-</td></tr></tbody>
+  </table>
+
+  <script>
+  function addRow() {
+    let tbody = document.getElementById("tableBody");
+    let row = document.createElement("tr");
+
+    // Date
+    let dateCell = document.createElement("td");
+    let dateInput = document.createElement("input");
+    dateInput.type = "date";
+    dateInput.classList.add("dateField");
+    dateCell.appendChild(dateInput);
+
+    // Subject
+    let subjectCell = document.createElement("td");
+    let subjectInput = document.createElement("input");
+    subjectInput.placeholder = "Enter Subject";
+    subjectCell.appendChild(subjectInput);
+
+    // Total Marks
+    let totalCell = document.createElement("td");
+    let totalInput = document.createElement("input");
+    totalInput.type = "number";
+    totalInput.placeholder = "Total";
+    totalCell.appendChild(totalInput);
+
+    // Obtained Marks
+    let obtainedCell = document.createElement("td");
+    let obtainedInput = document.createElement("input");
+    obtainedInput.type = "number";
+    obtainedInput.placeholder = "Obtained";
+    obtainedInput.oninput = () => calculatePercentage(totalInput, obtainedInput, percCell);
+    totalInput.oninput = () => calculatePercentage(totalInput, obtainedInput, percCell);
+    obtainedCell.appendChild(obtainedInput);
+
+    // Percentage
+    let percCell = document.createElement("td");
+    percCell.innerText = "-";
+
+    // Append all
+    row.appendChild(dateCell);
+    row.appendChild(subjectCell);
+    row.appendChild(totalCell);
+    row.appendChild(obtainedCell);
+    row.appendChild(percCell);
+
+    tbody.appendChild(row);
+  }
+
+  function calculatePercentage(totalInput, obtainedInput, percCell) {
+    let total = parseFloat(totalInput.value);
+    let obtained = parseFloat(obtainedInput.value);
+    if (!isNaN(total) && !isNaN(obtained) && total > 0) {
+      let perc = ((obtained / total) * 100).toFixed(2);
+      percCell.innerText = perc + "%";
+    } else {
+      percCell.innerText = "-";
+    }
+  }
+
+  function filterByMonth() {
+    let month = document.getElementById("monthFilter").value;
+    let rows = document.querySelectorAll("#tableBody tr");
+    rows.forEach(row => {
+      let dateInput = row.querySelector(".dateField");
+      if (dateInput && dateInput.value) {
+        let rowMonth = dateInput.value.split("-")[1];
+        row.style.display = (month === "all" || rowMonth === month) ? "" : "none";
+      }
+    });
+  }
+
+  // ✅ Save Function
+  function saveData() {
+    let data = document.getElementById("tableBody").innerHTML;
+    localStorage.setItem("marksData", data);
+    alert("Data saved ✅");
+  }
+
+  // ✅ Load Function
+  function loadData() {
+    let saved = localStorage.getItem("marksData");
+    if (saved) {
+      document.getElementById("tableBody").innerHTML = saved;
+
+      // Percentage calculation restore karne ke liye
+      document.querySelectorAll("#tableBody tr").forEach(row => {
+        let totalInput = row.cells[2].querySelector("input");
+        let obtainedInput = row.cells[3].querySelector("input");
+        let percCell = row.cells[4];
+
+        if (totalInput && obtainedInput) {
+          totalInput.oninput = () => calculatePercentage(totalInput, obtainedInput, percCell);
+          obtainedInput.oninput = () => calculatePercentage(totalInput, obtainedInput, percCell);
+        }
+      });
+    }
+  }
+
+  // ✅ Print Function
+  function printTable() {
+    window.print();
+  }
+
+  // Page load hone par data wapas laao
+  window.onload = loadData;
+</script>
+    
+
+
+
+</body></html>
